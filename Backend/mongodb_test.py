@@ -3,9 +3,12 @@ from pprint import pprint
 import json
 import us
 from flask import Flask
+import private 
+
+app = Flask(__name__)
 
 client = MongoClient(
-    "mongodb+srv://sunil_sabnis:2nhZXrfu5Eiv5mFw@cluster0.upbuw.mongodb.net/<dbname>?retryWrites=true&w=majority")
+    "mongodb+srv://"+private.user+":"+private.passw+"@cluster0.upbuw.mongodb.net/<dbname>?retryWrites=true&w=majority")
 db = client.admin
 
 # Test querying, returns json object
@@ -16,8 +19,6 @@ res = data.find_one({'state': 'PR'})
 states = us.states.mapping('abbr', 'name').keys()
 
 # get hospital bed capacity for each state
-
-
 def create_hos_capacity():
     acc = []
     for s in states:
@@ -37,4 +38,10 @@ def create_hos_capacity():
             avg_icu = int((icu_b_used_acc / icu_b_total_acc) * 100)
             avg_reg = int((reg_b_used_acc / reg_b_total_acc) * 100)
             acc.append({'state': s, 'avg_icu': avg_icu, 'avg_reg': avg_reg})
-    return acc
+    return jsonify({'data': acc})
+
+# website.com <- index.html 
+@app.route("/")
+def load_init():
+
+
