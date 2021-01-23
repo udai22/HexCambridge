@@ -37,12 +37,17 @@ def create_hos_capacity():
                     h["all_adult_hospital_beds_7_day_avg"])
             avg_icu = int((icu_b_used_acc / icu_b_total_acc) * 100)
             avg_reg = int((reg_b_used_acc / reg_b_total_acc) * 100)
-            acc.append({'state': s, 'avg_icu': avg_icu, 'avg_reg': avg_reg})
+            acc.append({s:{'avg_icu': avg_icu, 'avg_reg': avg_reg}}) 
     return jsonify({'data': acc})
 
 # website.com <- index.html  d 
-@app.route("/")
+@app.route("/home", method = ["GET"])
 def load_init():
   return create_hos_capacity()
+
+
+
+
+
 
 
