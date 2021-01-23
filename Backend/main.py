@@ -43,5 +43,6 @@ def create_hos_capacity():
 # website.com <- index.html  d 
 @app.route("/")
 def load_init():
+  return create_hos_capacity()
 
 
