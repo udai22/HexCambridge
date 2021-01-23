@@ -40,7 +40,7 @@ def create_hos_capacity():
             acc.append({'state': s, 'avg_icu': avg_icu, 'avg_reg': avg_reg})
     return jsonify({'data': acc})
 
-# website.com <- index.html 
+# website.com <- index.html  d 
 @app.route("/")
 def load_init():
 
