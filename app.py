@@ -15,12 +15,12 @@ app = Flask(__name__)
 with open('state_data.json') as f:
    states = json.load(f)
    
-print([(x, states[x]['avg_icu']) for x in states])
+average_icu = [(x, states[x]['avg_icu']) for x in states]
 
 @app.route('/')
 def home():
     """Render website's home page."""
-    return states
+    return average_icu
 # @app.route('/about/')
 # def about():
 #     """Render the website's about page."""
