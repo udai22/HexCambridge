@@ -11,6 +11,9 @@ data = client['HospitalAbridged']['Data']
 res = data.find_one({'state': 'PR'})
 # prints hospital bed ratio, index into JSON object like a list
 
+# Data for vaccinations per state
+vac_data = client['HospitalAbridged']['vaccination_count']
+
 states = us.states.mapping('abbr', 'name').keys()
 
 # get hospital bed capacity for each state
@@ -18,7 +21,6 @@ def create_hos_capacity():
     acc = {}
     for s in states:
         h_lst = data.find({'state': s})
-
         if h_lst != None:
           icu_b_used_acc = 0
           icu_b_total_acc = 0
@@ -46,3 +48,15 @@ def create_hos_capacity():
 states_data = create_hos_capacity()
 with open('state_data.json', 'w') as outfile:
     json.dump(states_data, outfile)
+
+def create_simple_dict(field): 
+  acc = {}
+  for s in states:
+    state_data = vac_data.find_one({'abbrev': s})
+    acc[s] = state_data[field]
+
+with open('total_vac_data.json', 'w') as outfile:
+    json.dumps(create_simple_dict('Total Distributed'))
+
+with open('dist_vac_data.json', 'w') as outfile:
+    json.dumps(create_simple_dict('Total Administered'))
