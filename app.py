@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
@@ -20,7 +20,7 @@ average_icu = [(x, states[x]['avg_icu']) for x in states]
 @app.route('/')
 def home():
     """Render website's home page."""
-    return average_icu
+    return jsonify(average_icu)
 # @app.route('/about/')
 # def about():
 #     """Render the website's about page."""
