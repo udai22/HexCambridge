@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useState, setState } from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 import Datamap from 'datamaps/dist/datamaps.all.min.js';
+import axios from 'axios';
 
-export default class DataMap extends React.Component {
-      state = {
-        dataset: {},
+class DataMap extends React.Component {
+      
+      constructor(props) {
+        super(props);
+        this.state = {
+          //states
+        };
+      }
+
+      componentDidUpdate() {
+        this.datamap.updateChoropleth(this.initialColor());
       }
 
       render() {
-          return (
-            <div id="datamap-container" style={{marginTop: ""}}></div>
-          );
-        }
+        return (
+              <>
+                <div id="datamap-container" style={{marginTop: ""}}></div>
+              </>
+        );
+      }
 
       renderMap(){
         return new Datamap({
@@ -43,14 +54,16 @@ export default class DataMap extends React.Component {
           responsive: true
         });
       }
+
       currentScreenWidth(){
         return window.innerWidth ||
             document.documentElement.clientWidth ||
             document.body.clientWidth;
-            
       }
-      initialColor(){
 
+
+
+      initialColor() {
         var series = [
           ["AL",75],["AK",43],["AS",50],["AZ",88],["AR",21],["CA",43],
           ["CO",21],["CT",19],["DE",60],["DC",4],["FL",44],["GA",38],
@@ -62,8 +75,11 @@ export default class DataMap extends React.Component {
           ["TN",15],["TX",52],["UT",19],["VT",69],["VA",37],["VI",44],
           ["WA",13],["WV",21],["WI",89],["WY",20]];
 
+          
+
         var dataset = {};
-        var onlyValues = series.map(function(obj){ return obj[1]; });
+        var onlyValues = this.props.jsonReturnedValue.map(function(obj){ return obj[1]; });
+        console.log(onlyValues);
 
         // We need to colorize every country based on "numberOfWhatever"
         // colors should be uniq for every value.
@@ -78,7 +94,7 @@ export default class DataMap extends React.Component {
               .domain([minValue,maxValue])
               .range(["#72ed85","#f25060"]); // green-red color range
 
-        series.forEach(function(item){ //
+        this.props.jsonReturnedValue.forEach(function(item){ //
           // item example value ["USA", 70]
           var iso = item[0],
               value = item[1];
@@ -100,7 +116,6 @@ export default class DataMap extends React.Component {
         mapContainer.style(containerWidth);
         this.datamap = this.renderMap();
         this.datamap.resize();
-        this.datamap.updateChoropleth(this.initialColor());
         this.datamap.labels();
         window.addEventListener('resize', () => {
           const currentScreenWidth = this.currentScreenWidth();
@@ -113,7 +128,7 @@ export default class DataMap extends React.Component {
             });
             this.datamap = this.renderMap();
             this.datamap.resize();
-            this.datamap.updateChoropleth(this.initialColor());
+            //this.datamap.updateChoropleth(this.initialColor());
             this.datamap.labels();
           }
           else if (this.currentScreenWidth() <= 600) {
@@ -124,9 +139,10 @@ export default class DataMap extends React.Component {
             });
             this.datamap = this.renderMap();
             this.datamap.resize();
-            this.datamap.updateChoropleth(this.initialColor());
+            //this.datamap.updateChoropleth(this.initialColor());
             this.datamap.labels();
           }
         });
       }
 }
+export default DataMap;
