@@ -14,6 +14,8 @@ app = Flask(__name__)
 ###
 with open('state_data.json') as f:
    states = json.load(f)
+   
+print([(x, states[x]['avg_icu']) for x in states])
 
 @app.route('/')
 def home():
