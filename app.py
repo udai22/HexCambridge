@@ -11,10 +11,13 @@ app = Flask(__name__)
 ###
 # Routing for your application.
 ###
+with open('state_data.json') as f:
+   states = json.load(f)
+
 @app.route('/')
 def home():
     """Render website's home page."""
-    return 'hello'
+    return states
 # @app.route('/about/')
 # def about():
 #     """Render the website's about page."""
